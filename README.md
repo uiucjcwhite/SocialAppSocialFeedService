@@ -11,7 +11,9 @@ In the Project Explore, right click on SocialAppMicroserviceApplication.java und
 
 #### Example Endpoints
 http://localhost:8080
+
 http://localhost:8080/json
+
 http://localhost:8080/json?name=Andrew
 
 #### More info
