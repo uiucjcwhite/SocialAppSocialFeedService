@@ -16,5 +16,7 @@ http://localhost:8080/json?name=Andrew
 
 #### More info
 [Getting Started](https://spring.io/guides/gs/spring-boot/)
+
 [Intro to Spring Boot and more info](http://www.adeveloperdiary.com/java/spring-boot/an-introduction-to-spring-boot/)
+
 [Another example with a postgres database](http://mrbool.com/rest-server-with-spring-data-spring-boot-and-postgresql/34023)
