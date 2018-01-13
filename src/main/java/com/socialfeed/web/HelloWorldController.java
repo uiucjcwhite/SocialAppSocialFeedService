@@ -1,10 +1,10 @@
-package com.socialapp.microservice.web;
+package com.socialfeed.web;
 
 import org.springframework.boot.autoconfigure.*;
 import org.springframework.stereotype.*;
 import org.springframework.web.bind.annotation.*;
 
-import com.socialapp.microservice.domain.HelloWorld;
+import com.socialfeed.SocialFeed;
 
 @Controller
 @EnableAutoConfiguration
@@ -18,7 +18,7 @@ public class HelloWorldController {
 	
 	@RequestMapping(value = "/json", method = RequestMethod.GET)
 	@ResponseBody
-	public HelloWorld helloJson(@RequestParam(value="name", required=false, defaultValue="World") String name) {
-		return new HelloWorld(name);
+	public SocialFeed helloJson(@RequestParam(value="name", required=false, defaultValue="World") String name) {
+		return new SocialFeed();
 	}
 }

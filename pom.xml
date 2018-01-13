@@ -4,11 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.socialapp</groupId>
-	<artifactId>microservice</artifactId>
+	<artifactId>socialfeed</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>SocialAppMicroservice</name>
+	<name>SocialFeedMicroservice</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
@@ -44,6 +44,18 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+		    <groupId>joda-time</groupId>
+		    <artifactId>joda-time</artifactId>
+		    <version>2.3</version>
+		</dependency>
+		<dependency>
+			<groupId>com.socialapplibrary</groupId>
+			<artifactId>library</artifactId>
+			<version>.0.0.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/library-0.0.1.jar</systemPath>
 		</dependency>
 	</dependencies>
 
