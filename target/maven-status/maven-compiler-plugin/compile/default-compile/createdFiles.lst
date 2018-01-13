@@ -1,0 +1,10 @@
+com\socialfeed\domain\entity\User$Gender.class
+com\socialfeed\SocialFeed.class
+com\socialfeed\domain\entity\Group.class
+com\socialfeed\web\HelloWorldController.class
+com\socialfeed\domain\HelloWorld.class
+com\socialfeed\domain\entity\Entity.class
+com\socialfeed\domain\entity\BaseDatabaseObject.class
+com\socialfeed\domain\entity\User.class
+com\socialfeed\domain\entity\DatabaseObject.class
+com\socialfeed\domain\entity\Event.class
