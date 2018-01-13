@@ -16,7 +16,7 @@ public abstract class FeedWorkflow implements IFeedWorkflow {
 	 * @return
 	 */
 	@Override
-	public abstract FeedData beginWorkflow(FeedData feedData);
+	public abstract void beginWorkflow(FeedData feedData);
 
 	
 }

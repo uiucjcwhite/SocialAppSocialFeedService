@@ -15,5 +15,5 @@ public interface IFeedWorkflow {
 	 * All workflow steps run through this method.
 	 * @return
 	 */
-	public abstract FeedData beginWorkflow(FeedData feedData);
+	public abstract void beginWorkflow(FeedData feedData);
 }
