@@ -71,12 +71,12 @@ public class FeedData {
 		}
 	}
 	
-	public void AddFeedItemFront(Entity entity)
+	public void addFeedItemFront(Entity entity)
 	{
 		this.addFeedItem(entity, 0);
 	}
 	
-	public void AddFeedItemToBack(Entity entity)
+	public void addFeedItemToBack(Entity entity)
 	{
 		this.addFeedItem(entity, Math.max(this.feedItems.size() - 1, 0));
 	}

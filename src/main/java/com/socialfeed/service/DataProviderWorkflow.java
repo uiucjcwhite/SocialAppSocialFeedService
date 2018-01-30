@@ -10,7 +10,6 @@ import java.util.concurrent.Future;
 
 import com.socialfeed.domain.DataProvider;
 import com.socialfeed.domain.FeedData;
-import com.socialfeed.domain.entity.BaseDatabaseObject;
 import com.socialfeed.domain.entity.Entity;
 import com.socialfeed.domain.entity.User;
 import com.socialapplibrary.core.entity.enums.ObjectIdPrefixEnum;

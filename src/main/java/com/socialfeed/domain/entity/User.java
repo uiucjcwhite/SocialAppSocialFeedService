@@ -43,9 +43,9 @@ public class User extends Entity {
 	 * @see com.socialfeed.domain.entity.BaseDatabaseObject#getSerializedProperties()
 	 */
 	@Override
-	public ArrayList<String> getSerializedProperties() {
+	public ArrayList<Object> getSerializedProperties() {
 		// TODO Auto-generated method stub
-		return new ArrayList<String> (Arrays.asList(this.id, this.gender.toString()));
+		return new ArrayList<Object> (Arrays.asList(this.getId(), this.gender.toString()));
 	}
 	
 	

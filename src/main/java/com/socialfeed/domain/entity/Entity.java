@@ -2,6 +2,8 @@ package com.socialfeed.domain.entity;
 
 import java.util.HashSet;
 
+import com.socialapplibrary.core.entity.BaseDatabaseObject;
+
 /**
  * @author Cameron
  * A superclass for the three main entities: Group, Event, User.
