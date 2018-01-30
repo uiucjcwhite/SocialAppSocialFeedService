@@ -1,4 +1,4 @@
-package com.socialapp.microservice;
+package com.socialfeed;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
