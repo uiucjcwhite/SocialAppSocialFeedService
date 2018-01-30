@@ -15,9 +15,10 @@ public class SuggestedFeedWorkflow extends FeedWorkflow {
 	 * @see com.socialfeed.service.FeedWorkflow#beginWorkflow()
 	 */
 	@Override
-	public FeedData beginWorkflow(FeedData feedData) {
-		// TODO Auto-generated method stub
-		return null;
+	public void beginWorkflow(FeedData feedData) {
+		//No use yet, we need location working first. LOCATION IS WORKING BB
+		
+		
 	}
 
 }

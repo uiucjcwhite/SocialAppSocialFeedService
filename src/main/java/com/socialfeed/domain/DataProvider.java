@@ -15,7 +15,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
 
-import com.socialapplibrary.database.SpringSQLConnection;
+import com.socialapplibrary.database.SQLConnection;
+import com.socialapplibrary.utility.GeoUtility;
+import com.socialapplibrary.utility.GeoUtility.Location;
 import com.socialapplibrary.utility.Utility;
 import com.socialfeed.domain.entity.Entity;
 import com.socialfeed.domain.entity.Event;
@@ -38,7 +40,7 @@ public class DataProvider {
 	private static String dbSchemaName = "social-app-schema";
 	private static String dbName = "social-app-local";
 	
-	private static SpringSQLConnection sqlConnection = new SpringSQLConnection(host, port, dbName, dbUser, dbPass, dbSchemaName);
+	private static SQLConnection sqlConnection = new SQLConnection(host, port, dbName, dbUser, dbPass, dbSchemaName, true);
 	
 	public static final String CONNECTION_TABLE = "\"Connection\"";
 	public static final String EVENT_TABLE = "\"Event\"";
@@ -140,6 +142,8 @@ public class DataProvider {
 		while(resultSet.next())
 		{
 			String id = resultSet.getString("id");
+			Location exactLocation;
+			
 			switch (tableName)
 			{
 			case DataProvider.PROFILE_TABLE:
@@ -147,10 +151,12 @@ public class DataProvider {
 				break;
 			case DataProvider.EVENT_TABLE:
 				Instant eventStartDate = Utility.parseSQLTimestampToInstant(resultSet.getTimestamp("start_date").toString());
-				entities.add(new Event(id, eventStartDate));
+				exactLocation = GeoUtility.Location.parseLocation(resultSet.getString("exact_location"));
+				entities.add(new Event(id, eventStartDate, exactLocation));
 				break;
 			case DataProvider.GROUP_TABLE:
-				entities.add(new Group(id));
+				exactLocation = GeoUtility.Location.parseLocation(resultSet.getString("exact_location"));
+				entities.add(new Group(id, exactLocation));
 				break;
 			}
 		}

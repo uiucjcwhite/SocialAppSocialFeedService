@@ -5,7 +5,7 @@
 
 	<groupId>com.socialapp</groupId>
 	<artifactId>socialfeed</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>socialfeed-0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>SocialFeedMicroservice</name>
@@ -57,6 +57,7 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/library-0.0.1.jar</systemPath>
 		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
