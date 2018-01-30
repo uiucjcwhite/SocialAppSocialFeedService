@@ -26,7 +26,7 @@ public class FeedData {
 	 * The list that gets sent back to the user. The list is a ranked list
 	 * where the first element is the most and important the last is the least important.
 	 */
-	LinkedList<Entity> feedItems;
+	private LinkedList<Entity> feedItems;
 	
 	public FeedData(String id)
 	{
@@ -120,6 +120,10 @@ public class FeedData {
 	public HashSet<User> getFriends()
 	{
 		return this.friends;
+	}
+	
+	public LinkedList<Entity> getFeedItems() {
+		return this.feedItems;
 	}
 	
 	public void setInterests(HashSet<String> interests)

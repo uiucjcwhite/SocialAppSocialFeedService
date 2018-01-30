@@ -22,13 +22,18 @@ import com.socialfeed.domain.entity.Group;
  */
 public class SubscribedFeedWorkflow extends FeedWorkflow {
 
+	public SubscribedFeedWorkflow(FeedData feedData)
+	{
+		super(feedData);
+	}
+	
 	/**
 	 * This workflow step does the following:
 	 * 1. Sort the event updates by event start time and then update time
 	 * 2. Sort the group updates by update time
 	 */
 	@Override
-	public void beginWorkflow(FeedData feedData) {
+	public void beginWorkflow() {
 		
 		ArrayList<Event> sortedEvents = this.sortEvents(feedData.getEvents());
 		ArrayList<Group> groups = new ArrayList<Group>(feedData.getGroups()); //No sorting yet;

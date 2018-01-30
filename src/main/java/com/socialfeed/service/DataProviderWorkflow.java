@@ -1,9 +1,7 @@
-/**
- * 
- */
 package com.socialfeed.service;
 
 import java.util.ArrayList;
+
 import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -11,17 +9,21 @@ import java.util.concurrent.Future;
 import com.socialfeed.domain.DataProvider;
 import com.socialfeed.domain.FeedData;
 import com.socialfeed.domain.entity.Entity;
-import com.socialfeed.domain.entity.User;
 import com.socialapplibrary.core.entity.enums.ObjectIdPrefixEnum;
+
 /**
  * @author Cameron
  *
  */
 public class DataProviderWorkflow extends FeedWorkflow {
-
+	
+	public DataProviderWorkflow(FeedData feedData)
+	{
+		super(feedData);
+	}
 
 	@Override
-	public void beginWorkflow(FeedData feedData) {
+	public void beginWorkflow() {
 		
 		ArrayList<Future<HashSet<String>>> databaseSubscriptionCalls = new ArrayList<Future<HashSet<String>>>();
 		ArrayList<Future<HashSet<Entity>>> databaseDataCalls = new ArrayList<Future<HashSet<Entity>>>();
@@ -81,7 +83,7 @@ public class DataProviderWorkflow extends FeedWorkflow {
 						HashSet<Entity> entities = currentDataCall.get(); //We have all of the user's subscribed ids. We now need to get their data.
 						if (entities.size() > 0)
 						{
-							this.setFeedDataEntity(feedData, entities);
+							this.setFeedDataEntity(entities);
 						}
 					} catch (InterruptedException | ExecutionException e) {
 						e.printStackTrace();
@@ -98,7 +100,7 @@ public class DataProviderWorkflow extends FeedWorkflow {
 		}
 	}
 	
-	private void setFeedDataEntity(FeedData feedData, HashSet<Entity> entities)
+	private void setFeedDataEntity(HashSet<Entity> entities)
 	{
 		//All the entity ids should be of the same sub entity.
 		String sampleId = entities.iterator().next().getId();
