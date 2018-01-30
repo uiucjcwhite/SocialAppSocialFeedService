@@ -31,13 +31,6 @@ public class User extends Entity {
 		this.gender = gender;
 	}
 	
-	/* (non-Javadoc)
-	 * @see main.java.com.core.entity.BaseDatabaseObject#getSerializedPropertyNames()
-	 */
-	@Override
-	public List<String> getSerializedPropertyNames() {
-		return this.columnNames;
-	}
 
 	/* (non-Javadoc)
 	 * @see com.socialfeed.domain.entity.BaseDatabaseObject#getSerializedProperties()

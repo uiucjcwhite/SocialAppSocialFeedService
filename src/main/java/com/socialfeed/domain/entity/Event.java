@@ -38,14 +38,6 @@ public class Event extends Entity {
 	{
 		return this.exactLocation;
 	}
-	
-	/* (non-Javadoc)
-	 * @see com.socialfeed.domain.entity.BaseDatabaseObject#getSerializedPropertyNames()
-	 */
-	@Override
-	public List<String> getSerializedPropertyNames() {
-		return this.columnNames;
-	}
 
 	/* (non-Javadoc)
 	 * @see com.socialfeed.domain.entity.BaseDatabaseObject#getSerializedProperties()

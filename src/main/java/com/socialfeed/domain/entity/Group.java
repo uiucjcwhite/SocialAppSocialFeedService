@@ -27,14 +27,6 @@ public class Group extends Entity {
 	}
 
 	/* (non-Javadoc)
-	 * @see com.socialfeed.domain.entity.BaseDatabaseObject#getSerializedPropertyNames()
-	 */
-	@Override
-	public List<String> getSerializedPropertyNames() {
-		return this.columnNames;
-	}
-
-	/* (non-Javadoc)
 	 * @see com.socialfeed.domain.entity.BaseDatabaseObject#getSerializedProperties()
 	 */
 	@Override

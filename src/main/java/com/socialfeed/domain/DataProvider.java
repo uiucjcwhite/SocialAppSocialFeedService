@@ -40,7 +40,7 @@ public class DataProvider {
 	private static String dbSchemaName = "social-app-schema";
 	private static String dbName = "social-app-local";
 	
-	private static SQLConnection sqlConnection = new SQLConnection(host, port, dbName, dbUser, dbPass, dbSchemaName, true);
+	private static SQLConnection sqlConnection = new SQLConnection(host, port, dbName, dbUser, dbPass, dbSchemaName);
 	
 	public static final String CONNECTION_TABLE = "\"Connection\"";
 	public static final String EVENT_TABLE = "\"Event\"";
