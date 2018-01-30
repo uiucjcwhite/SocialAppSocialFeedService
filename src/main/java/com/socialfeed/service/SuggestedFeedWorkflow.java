@@ -11,11 +11,15 @@ import com.socialfeed.domain.FeedData;
  */
 public class SuggestedFeedWorkflow extends FeedWorkflow {
 
+	public SuggestedFeedWorkflow(FeedData feedData) {
+		super(feedData);
+	}
+	
 	/* (non-Javadoc)
 	 * @see com.socialfeed.service.FeedWorkflow#beginWorkflow()
 	 */
 	@Override
-	public void beginWorkflow(FeedData feedData) {
+	public void beginWorkflow() {
 		//No use yet, we need location working first. LOCATION IS WORKING BB
 		
 		
