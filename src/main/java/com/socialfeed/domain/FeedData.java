@@ -61,13 +61,11 @@ public class FeedData {
 		{
 			this.feedItems.add(index, entity);
 		} 
-		else
+		// Only PROMOTE the ranking of an entity
+		else if (index > position)
 		{
-			if (index != position)
-			{
-				this.feedItems.remove(position);
-				this.feedItems.add(position, entity);
-			}
+			this.feedItems.remove(position);
+			this.feedItems.add(position, entity);
 		}
 	}
 	

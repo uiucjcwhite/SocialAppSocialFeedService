@@ -22,7 +22,7 @@ public class Group extends Entity {
 	 * @param id
 	 */
 	public Group(String id, Location location) {
-		super(id);
+		super(id, location);
 		this.exactLocation = location;
 	}
 

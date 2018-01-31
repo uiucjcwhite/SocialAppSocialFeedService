@@ -18,13 +18,13 @@ import com.socialapplibrary.utility.GeoUtility.Location;
  */
 public class Event extends Entity {
 
-	private final List<String> columnNames = Collections.unmodifiableList(Arrays.asList("id", "start_date"));
+	private final List<String> columnNames = Collections.unmodifiableList(Arrays.asList("id", "start_date", "exact_location"));
 
 	private Instant startDate;
 	private Location exactLocation;
 	
 	public Event(String id, Instant startDate, Location location) {
-		super(id);
+		super(id, location);
 		this.startDate = startDate;
 		this.exactLocation = location;
 	}

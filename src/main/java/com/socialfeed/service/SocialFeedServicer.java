@@ -24,13 +24,13 @@ public class SocialFeedServicer {
 		FeedData feedData = new FeedData(id);
 		DataProviderWorkflow dataProvider = new DataProviderWorkflow(feedData);
 		dataProvider.beginWorkflow();
-		
+	
 		SubscribedFeedWorkflow subscribedFeed = new SubscribedFeedWorkflow(feedData);
 		subscribedFeed.beginWorkflow();
-		
+	
 		SuggestedFeedWorkflow suggestedFeed = new SuggestedFeedWorkflow(feedData);
 		suggestedFeed.beginWorkflow();
-		
+	
 		return feedData.getFeedItems();
 	}
 }
