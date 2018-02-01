@@ -43,18 +43,18 @@ import com.socialfeed.domain.entity.User;
 @EnableAsync
 public class DataProvider {
 
-	public static final String CONNECTION_TABLE = "Connection";
-	public static final String EVENT_TABLE = "Event";
-	public static final String EVENT_RELATION_TABLE = "Event Relation";
-	public static final String GROUP_TABLE = "Group";
-	public static final String GROUP_MEMBERSHIP_TABLE = "Group Membership";
-	public static final String INTEREST_TABLE = "Interest";
-	public static final String PROFILE_TABLE = "Profile";
-	public static final String USER_TABLE = "User";
+	public static final String CONNECTION = "Connection";
+	public static final String EVENT = "Event";
+	public static final String EVENT_RELATION = "Event Relation";
+	public static final String GROUP = "Group";
+	public static final String GROUP_MEMBERSHIP = "Group Membership";
+	public static final String INTEREST = "Interest";
+	public static final String PROFILE = "Profile";
+	public static final String USER = "User";
 	
-	public static final String USER_INTEREST_SUBSCRIPTION_TABLE = "User Interest Subscription";
-	public static final String EVENT_INTEREST_SUBSCRIPTION_TABLE = "Event Interest Subscription";
-	public static final String GROUP_INTEREST_SUBSCRIPTION_TABLE = "Group Interest Subscription";
+	public static final String USER_INTEREST_SUBSCRIPTION = "User Interest Subscription";
+	public static final String EVENT_INTEREST_SUBSCRIPTION = "Event Interest Subscription";
+	public static final String GROUP_INTEREST_SUBSCRIPTION = "Group Interest Subscription";
 
 
 	/**
@@ -76,11 +76,11 @@ public class DataProvider {
 			Gson g = new Gson();
 			List<Map<String, String>> idList = null;
 			URL url;
-			HttpURLConnection conn;
+			HttpURLConnection conn = null;
 			String data;
 			switch(tableName)
 			{
-			case DataProvider.CONNECTION_TABLE:
+			case DataProvider.CONNECTION:
 				String getUserIds = urlName + EndpointConstants.CORE_PORT + "/" + EndpointConstants.USER_CONNECTION;
 				url = new URL(getUserIds + String.format("?user1={0}&type=Friend", id));
 				conn = (HttpURLConnection) url.openConnection();
@@ -93,32 +93,30 @@ public class DataProvider {
 				url = new URL(getUserIds + String.format("?user2={0}", id));
 				conn = (HttpURLConnection) url.openConnection();
 				data = DataProvider.getJsonDataFromConnection(conn);
-				conn.disconnect();
 				idList.addAll(g.fromJson(data, new TypeToken<List<Map<String, String>>>(){}.getType()));
 				break;
 				
-			case DataProvider.EVENT_RELATION_TABLE:
+			case DataProvider.EVENT_RELATION:
 				String getEventIds = urlName + EndpointConstants.CORE_PORT + "/" + EndpointConstants.EVENT_ATTENDANCE_RELATION +
 					String.format("?user_id={0}&type=Accepted&type=Maybe", id);
 				url = new URL(getEventIds);
 				conn = (HttpURLConnection) url.openConnection();
 
 				data = DataProvider.getJsonDataFromConnection(conn);
-				
-				conn.disconnect();
+				idList = g.fromJson(data, new TypeToken<List<Map<String, String>>>(){}.getType());
+
 				break;
-			
-			case DataProvider.GROUP_MEMBERSHIP_TABLE:
+
+			case DataProvider.GROUP_MEMBERSHIP:
 				String getGroupIds = urlName + EndpointConstants.CORE_PORT + "/" + EndpointConstants.GROUP_MEMBERSHIP +
 					String.format("?user_id={0}&type=Member", id);
 				url = new URL(getGroupIds);
 				conn = (HttpURLConnection) url.openConnection();
 				data = DataProvider.getJsonDataFromConnection(conn);
-				idList = (g.fromJson(data, new TypeToken<List<Map<String, String>>>(){}.getType()));
-				conn.disconnect();
+				idList = g.fromJson(data, new TypeToken<List<Map<String, String>>>(){}.getType());
 				break;
-				
-			case DataProvider.USER_INTEREST_SUBSCRIPTION_TABLE:
+
+			case DataProvider.USER_INTEREST_SUBSCRIPTION:
 				String getInterests = urlName + EndpointConstants.INTERESTS_PORT + "/" + EndpointConstants.USER_INTEREST_SUBSCRIPTION +
 					String.format("entityId={0}", id);
 				url = new URL(getInterests);
@@ -127,18 +125,18 @@ public class DataProvider {
 				idList = g.fromJson(data, new TypeToken<List<Map<String, String>>>(){}.getType());
 				break;
 			}
-			
+
+			conn.disconnect();
 			ids = DataProvider.getIdSet(idList);
 		}	
 		catch (Exception e)
 		{
 			System.out.println(e.getMessage());
 		}
-		
 
 		return new AsyncResult<HashSet<String>>(ids);
 	}
-	
+
 	private static String getJsonDataFromConnection(HttpURLConnection conn) throws IOException
 	{
 		String finalData = "";
@@ -153,8 +151,7 @@ public class DataProvider {
 		
 		return finalData;
 	}
-	
-	
+
 	/**
 	 * @param tableName
 	 * @param limit
@@ -164,15 +161,44 @@ public class DataProvider {
 	 * @throws SQLException
 	 */
 	@Async
-	public static Future<HashSet<Entity>> getSubscribedData(String tableName, HashSet<String> ids) {
+	public static Future<HashSet<Entity>> getSubscribedData(String endpoint, HashSet<String> ids) {
 		ResultSet resultSet;
 		HashSet<Entity> entities;
 		try
 		{
-			ArrayList<String> queryIds = new ArrayList<String>();
-			queryIds.addAll(ids);
-			resultSet = sqlConnection.getTableRowsByListSearch(tableName, "id", queryIds);
-			entities = DataProvider.buildEntitiesFromResultSet(resultSet, tableName);
+			String idQuery = "?id=" + String.join("&id=", ids);
+			String urlName = EndpointConstants.HOST + ":" + EndpointConstants.CORE_PORT;
+			Gson g = new Gson();
+			List<Map<String, String>> jsonEntities = null;
+			URL url;
+			HttpURLConnection conn;
+			String data = null;
+			switch (endpoint)
+			{
+			case DataProvider.EVENT:
+				String getEvents = urlName + EndpointConstants.EVENT + idQuery;
+				url = new URL(getEvents);
+				conn = (HttpURLConnection) url.openConnection();
+				
+				data = DataProvider.getJsonDataFromConnection(conn);
+				conn.disconnect();
+				break;
+			case DataProvider.GROUP:
+				String getGroups = urlName + EndpointConstants.GROUP + idQuery;
+				url = new URL(getGroups);
+				conn = (HttpURLConnection) url.openConnection();
+				
+				data = DataProvider.getJsonDataFromConnection(conn);
+				conn.disconnect();
+				break;
+			
+			case DataProvider.PROFILE:
+				//TODO: Figure out what we're doing with the friends
+				return new AsyncResult<HashSet<Entity>>(new HashSet<Entity>());
+			}
+
+			ArrayList<Map<String, String>> entityList = g.fromJson(data, new TypeToken<ArrayList<Map<String, String>>>(){}.getType());
+			entities = DataProvider.buildEntitiesFromResultSet(entityList, endpoint);
 			return new AsyncResult<HashSet<Entity>>(entities);
 		}
 		catch (Exception e)
@@ -199,26 +225,26 @@ public class DataProvider {
 		return ids;
 	}
 	
-	private static HashSet<Entity> buildEntitiesFromResultSet(ResultSet resultSet, String tableName) throws SQLException
+	private static HashSet<Entity> buildEntitiesFromResultSet(List<Map<String, String>> entityData, String tableName) throws SQLException
 	{
 		HashSet<Entity> entities = new HashSet<Entity>();
-		while(resultSet.next())
+		for (Map<String, String> entity: entityData)
 		{
-			String id = resultSet.getString("id");
+			String id = entity.get("id");
 			Location exactLocation;
 			
 			switch (tableName)
 			{
-			case DataProvider.PROFILE_TABLE:
-				entities.add(new User(id, User.Gender.valueOf(resultSet.getString("gender"))));
+			case DataProvider.PROFILE:
+				entities.add(new User(id, User.Gender.valueOf(entity.get("gender"))));
 				break;
-			case DataProvider.EVENT_TABLE:
-				Instant eventStartDate = Utility.parseSQLTimestampToInstant(resultSet.getTimestamp("start_date").toString());
-				exactLocation = GeoUtility.Location.parseLocation(resultSet.getString("exact_location"));
+			case DataProvider.EVENT:
+				Instant eventStartDate = Instant.parse(entity.get("start_date"));
+				exactLocation = GeoUtility.Location.parseLocation(entity.get("exact_location"));
 				entities.add(new Event(id, eventStartDate, exactLocation));
 				break;
-			case DataProvider.GROUP_TABLE:
-				exactLocation = GeoUtility.Location.parseLocation(resultSet.getString("exact_location"));
+			case DataProvider.GROUP:
+				exactLocation = GeoUtility.Location.parseLocation(entity.get("exact_location"));
 				entities.add(new Group(id, exactLocation));
 				break;
 			}

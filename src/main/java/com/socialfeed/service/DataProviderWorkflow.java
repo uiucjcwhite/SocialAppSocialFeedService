@@ -29,10 +29,10 @@ public class DataProviderWorkflow extends FeedWorkflow {
 		ArrayList<Future<HashSet<Entity>>> databaseDataCalls = new ArrayList<Future<HashSet<Entity>>>();
 		
 		String id = feedData.getId();
-		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.CONNECTION_TABLE, 100, id));
-		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.EVENT_RELATION_TABLE, 100, id));
-		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.GROUP_MEMBERSHIP_TABLE, 100, id));
-		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.USER_INTEREST_SUBSCRIPTION_TABLE, 200, id));
+		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.CONNECTION, 100, id));
+		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.EVENT_RELATION, 100, id));
+		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.GROUP_MEMBERSHIP, 100, id));
+		databaseSubscriptionCalls.add(DataProvider.getSubscribedIds(DataProvider.USER_INTEREST_SUBSCRIPTION, 200, id));
 
 		//Add interest db table
 		//Add timeout. Pass on what data we have if timeout occurs.
@@ -58,7 +58,7 @@ public class DataProviderWorkflow extends FeedWorkflow {
 							}
 							else
 							{
-								databaseDataCalls.add(DataProvider.getSubscribedData(this.getTableNameBasedOnPrefix(sampleId), subscriptionIds));
+								databaseDataCalls.add(DataProvider.getSubscribedData(this.getEndpointBasedOnPrefix(sampleId), subscriptionIds));
 							}
 						}
 					} catch (InterruptedException | ExecutionException e) {
@@ -102,6 +102,11 @@ public class DataProviderWorkflow extends FeedWorkflow {
 	
 	private void setFeedDataEntity(HashSet<Entity> entities)
 	{
+		if (entities == null)
+		{
+			return;
+		}
+		
 		//All the entity ids should be of the same sub entity.
 		String sampleId = entities.iterator().next().getId();
 		String samplePrefix = sampleId.substring(0, 3);
@@ -120,48 +125,45 @@ public class DataProviderWorkflow extends FeedWorkflow {
 			}	
 	}
 	
-	private String getTableNameBasedOnPrefix(String id)
+	private String getEndpointBasedOnPrefix(String id)
 	{
 		String prefixStr = id.substring(0, 3);
 		ObjectIdPrefixEnum prefix = ObjectIdPrefixEnum.valueOf(prefixStr);
-		String tableName = "";
+		String endpoint = "";
 		switch (prefix)
 		{
 		case USER:
-			tableName = DataProvider.USER_TABLE;
+			endpoint = DataProvider.PROFILE;
 			break;
 		case GROUP:
-			tableName = DataProvider.GROUP_TABLE;
+			endpoint = DataProvider.GROUP;
 			break;
 		case EVENT:
-			tableName = DataProvider.EVENT_TABLE;
-			break;
-		case USER_PROFILE:
-			tableName = DataProvider.PROFILE_TABLE;
+			endpoint = DataProvider.EVENT;
 			break;
 		case USER_CONNECTION:
-			tableName = DataProvider.CONNECTION_TABLE;
+			endpoint = DataProvider.CONNECTION;
 			break;
 		case GROUP_MEMBERSHIP:
-			tableName = DataProvider.GROUP_MEMBERSHIP_TABLE;
+			endpoint = DataProvider.GROUP_MEMBERSHIP;
 			break;
 		case EVENT_ATTENDANCE_RELATION:
-			tableName = DataProvider.EVENT_RELATION_TABLE;
+			endpoint = DataProvider.EVENT_RELATION;
 			break;
 		case INTEREST_RELATIONSHIP:
-			tableName = DataProvider.INTEREST_TABLE;
+			endpoint = DataProvider.INTEREST;
 			break;
 		case USER_INTEREST_SUBSCRIPTION:
-			tableName = "";
+			endpoint = DataProvider.USER_INTEREST_SUBSCRIPTION;
 			break;
 		case EVENT_INTEREST_SUBSCRIPTION:
-			tableName = "";
+			endpoint = DataProvider.EVENT_INTEREST_SUBSCRIPTION;
 			break;
 		case GROUP_INTEREST_SUBSCRIPTION:
-			tableName = "";
+			endpoint = DataProvider.GROUP_INTEREST_SUBSCRIPTION;
 			break;
 		}
 		
-		return tableName;
+		return endpoint;
 	}
 }
