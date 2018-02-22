@@ -329,6 +329,8 @@ public class DataProvider {
 					entity.get(Group.STATE),
 					GeoUtility.Location.parseLocation(entity.get("exact_location")),
 					ViewPrivacy.valueOf(entity.get(Group.VIEW_PRIVACY)),
+					Double.parseDouble(entity.get(Group.MEMBERSHIP_COST)),
+					entity.get(Group.ORGANIZATION),
 					Instant.parse(entity.get(BaseDatabaseObject.CREATEDDATE)));
 			break;
 		case DataProvider.ENTITY_POST:
