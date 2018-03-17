@@ -120,6 +120,34 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+			<plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.13</version>
+                <configuration>
+                    <imageName>446533665156.dkr.ecr.us-west-2.amazonaws.com/socialappsocialfeedmicroservice/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <useConfigFile>true</useConfigFile>
+                    <registryUrl>446533665156.dkr.ecr.us-west-2.amazonaws.com/socialappsocialfeedmicroservice</registryUrl>
+                    <!--dockerHost>https://${docker.registry.host}</dockerHost-->
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                        <resource>
+                        	<targetPath>/lib</targetPath>
+                            <directory>${project.basedir}/lib</directory>
+                            <include>*.jar</include>
+                        </resource>
+                    </resources>
+                    <forceTags>false</forceTags>
+                    <imageTags>
+                        <imageTag>${project.version}</imageTag>
+                    </imageTags>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 
