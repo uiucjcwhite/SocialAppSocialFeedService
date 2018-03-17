@@ -59,11 +59,16 @@
 			<groupId>com.socialapplibrary</groupId>
 			<artifactId>library</artifactId>
 			<version>0.0.1</version>
+			<scope>system</scope>	
+			<systemPath>${basedir}/lib/library-0.0.1.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.controller</groupId>
 			<artifactId>core</artifactId>
 			<version>0.0.1</version>
+			<scope>system</scope>	
+			
+			<systemPath>${basedir}/lib/core-0.0.1.jar</systemPath>
 		</dependency>
 				<dependency>
 		    <groupId>com.google.maps</groupId>
@@ -96,13 +101,6 @@
 		    <version>1.4.0</version>
 		</dependency>
 	</dependencies>
-
-	<repositories>
-		<repository>
-			<id>library</id>
-			<url>file://${basedir}/lib</url>
-		</repository>
-	</repositories>
 
 	<dependencyManagement>
 		<dependencies>
