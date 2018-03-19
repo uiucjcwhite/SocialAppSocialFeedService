@@ -128,7 +128,7 @@
                     <imageName>446533665156.dkr.ecr.us-west-2.amazonaws.com/socialappsocialfeedservice/${project.artifactId}</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <useConfigFile>true</useConfigFile>
-                    <registryUrl>446533665156.dkr.ecr.us-west-2.amazonaws.com/socialappsocialfeedservice</registryUrl>
+                    <registryUrl>446533665156.dkr.ecr.us-west-2.amazonaws.com/</registryUrl>
                     <!--dockerHost>https://${docker.registry.host}</dockerHost-->
                     <resources>
                         <resource>
