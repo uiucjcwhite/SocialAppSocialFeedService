@@ -25,6 +25,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
 
+import com.controller.data.Contact;
 import com.controller.models.entities.Entity;
 import com.controller.models.entities.EntityPost;
 import com.controller.models.entities.Event;
@@ -47,6 +48,7 @@ import com.socialapplibrary.endpoints.EndpointConstants;
 import com.socialapplibrary.utility.GeoUtility;
 import com.socialapplibrary.utility.GeoUtility.Location;
 import com.socialapplibrary.utility.Utility;
+import com.socialfeed.SocialFeed;
 
 
 /**
@@ -87,7 +89,7 @@ public class DataProvider {
 		HashSet<String> ids = new HashSet<String>();
 		try
 		{
-			String urlName = EndpointConstants.HOST + ":";
+			String urlName = SocialFeed.TARGET_HOST + ":";
 			Gson g = new Gson();
 			//List<BaseDatabaseObject> relationships = null;
 			URL url = null;
@@ -220,7 +222,7 @@ public class DataProvider {
 		try
 		{
 			String idQuery = "?id=" + String.join("&id=", ids);
-			String urlName = EndpointConstants.HOST + ":" + EndpointConstants.CORE_PORT;
+			String urlName = SocialFeed.TARGET_HOST + ":" + EndpointConstants.CORE_PORT;
 			Gson g = new Gson();
 			ArrayList<Entity> entityList = null;
 			URL url = null;
@@ -298,6 +300,10 @@ public class DataProvider {
 					entity.get(Profile.COUNTRY),
 					Profile.Type.valueOf(entity.get(Profile.TYPE)),
 					entity.get(Profile.EMAIL),
+					Contact.jsonToContact(entity.get(Profile.CONTACT)),
+					Profile.devicesJsonToList(entity.get(Profile.DEVICES)),
+					entity.get(Profile.BANNER),
+					entity.get(Profile.PHOTO),
 					Instant.parse(entity.get(BaseDatabaseObject.CREATEDDATE)));
 			break;
 		case DataProvider.EVENT:
@@ -305,19 +311,19 @@ public class DataProvider {
 					id,
 					entity.get(Event.NAME),
 					entity.get(Event.OWNER),
-					Instant.parse(entity.get(Event.START_DATE)),
-					Instant.parse(entity.get(Event.END_DATE)),
+					entity.get(Event.START_DATE),
+					entity.get(Event.END_DATE),
 					entity.get(Event.ADDRESS),
-					GeoUtility.Location.parseLocation(entity.get(Event.LOCATION)),
+					entity.get(Event.LOCATION),
 					entity.get(Event.DESCRIPTION),
-					Integer.parseInt(entity.get(Event.MAX_ATTENDEES)),
-					InvitePolicyEnum.valueOf(entity.get(Event.INVITE_POLICY)),
-					Boolean.parseBoolean(entity.get(Event.RECURRING)),
-					Instant.parse(entity.get(Event.NEXT_EVENT_START_DATE)),
-					Instant.parse(entity.get(Event.NEXT_EVENT_END_DATE)),
-					RecurringPeriodEnum.valueOf(entity.get(Event.RECURRING_PERIOD)),
-					ViewPrivacy.valueOf(entity.get(Event.VIEW_PRIVACY)),
-					Instant.parse(entity.get(BaseDatabaseObject.CREATEDDATE)));
+					entity.get(Event.MAX_ATTENDEES),
+					entity.get(Event.INVITE_POLICY),
+					entity.get(Event.RECURRING_ID),
+					entity.get(Event.VIEW_PRIVACY),
+					entity.get(Group.CONTACT),
+					entity.get(Group.BANNER),
+					entity.get(Group.PHOTO),
+					entity.get(BaseDatabaseObject.CREATEDDATE));
 			break;
 		case DataProvider.GROUP:
 			returnEntity = new Group(
@@ -327,10 +333,13 @@ public class DataProvider {
 					InvitePolicyEnum.valueOf(entity.get(Group.INVITE_POLICY)),
 					entity.get(Group.CITY),
 					entity.get(Group.STATE),
-					GeoUtility.Location.parseLocation(entity.get("exact_location")),
+					GeoUtility.Location.parseLocation(entity.get(Group.LOCATION)),
 					ViewPrivacy.valueOf(entity.get(Group.VIEW_PRIVACY)),
 					Double.parseDouble(entity.get(Group.MEMBERSHIP_COST)),
 					entity.get(Group.ORGANIZATION),
+					Contact.jsonToContact(entity.get(Group.CONTACT)),
+					entity.get(Group.BANNER),
+					entity.get(Group.PHOTO),
 					Instant.parse(entity.get(BaseDatabaseObject.CREATEDDATE)));
 			break;
 		case DataProvider.ENTITY_POST:
@@ -379,7 +388,7 @@ public class DataProvider {
 	@Async
 	public static Future<ArrayList<Event>> getClosestEvents(Location location) throws IOException, ParseException
 	{
-		String getClosestEvents = EndpointConstants.HOST + ":" + EndpointConstants.CORE_PORT + EndpointConstants.EVENT;
+		String getClosestEvents = SocialFeed.TARGET_HOST + ":" + EndpointConstants.CORE_PORT + EndpointConstants.EVENT;
 		URL url = new URL(getClosestEvents + String.format("?view_privacy=Public&exact_location=%s&limit=50&sort=distance&orderby=ASC", location.toString()));
 		System.out.println(url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -397,7 +406,7 @@ public class DataProvider {
 	@Async
 	public static Future<ArrayList<Event>> getEventsFromSubscribedGroups(HashSet<Group> subscribedGroups) throws IOException, SQLException, ParseException
 	{
-		String getEventsFromGroups = EndpointConstants.HOST + ":" + EndpointConstants.CORE_PORT + "/" + EndpointConstants.EVENT;
+		String getEventsFromGroups = SocialFeed.TARGET_HOST + ":" + EndpointConstants.CORE_PORT + "/" + EndpointConstants.EVENT;
 		
 		String paramList = "?";
 		Iterator<Group> it = subscribedGroups.iterator();

@@ -25,6 +25,19 @@
 		<spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>geddyservices-jar-release-repo</id>
+			<name>Geddy Services Maven Release Repo</name>
+			<url>s3://geddyservices-jar-repo/releases</url>
+		</repository>
+		<repository>
+			<id>geddyservices-jar-snapshot-repo</id>
+			<name>Geddy Services Maven Snapshot Repo</name>
+			<url>s3://geddyservices-jar-repo/snapshots</url>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -33,12 +46,6 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -58,17 +65,12 @@
 		<dependency>
 			<groupId>com.socialapplibrary</groupId>
 			<artifactId>library</artifactId>
-			<version>0.0.1</version>
-			<scope>system</scope>	
-			<systemPath>${basedir}/lib/library-0.0.1.jar</systemPath>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.controller</groupId>
-			<artifactId>core</artifactId>
-			<version>0.0.1</version>
-			<scope>system</scope>	
-			
-			<systemPath>${basedir}/lib/core-0.0.1.jar</systemPath>
+			<artifactId>corecontroller</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 				<dependency>
 		    <groupId>com.google.maps</groupId>
@@ -149,6 +151,13 @@
                 </configuration>
             </plugin>
 		</plugins>
+		<extensions>
+			<extension>
+				<groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+			</extension>
+		</extensions>
 	</build>
 
 </project>
