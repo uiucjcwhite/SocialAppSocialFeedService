@@ -47,12 +47,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -75,10 +69,8 @@
 		</dependency>
 		<dependency>
 			<groupId>com.controller</groupId>
-			<artifactId>core</artifactId>
-			<version>0.0.1</version>
-			<scope>system</scope>	
-			<systemPath>${basedir}/lib/core-0.0.1.jar</systemPath>
+			<artifactId>corecontroller</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 		    <groupId>com.google.maps</groupId>
@@ -140,7 +132,7 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <imageName>446533665156.dkr.ecr.us-west-2.amazonaws.com/socialappsocialfeedservice</imageName>
+                    <imageName>446533665156.dkr.ecr.us-west-2.amazonaws.com/socialfeedservice</imageName>
                     <dockerDirectory>src/main/docker</dockerDirectory>
                     <useConfigFile>true</useConfigFile>
                     <registryUrl>446533665156.dkr.ecr.us-west-2.amazonaws.com</registryUrl>

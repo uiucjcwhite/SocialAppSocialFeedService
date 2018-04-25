@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.socialapplibrary.endpoints.EndpointConstants;
 import com.socialapplibrary.utility.Utility;
+import com.socialfeed.SocialFeed;
 import com.socialfeed.domain.DataProvider;
 import com.socialfeed.domain.FeedData;
 
@@ -50,7 +51,7 @@ public class SubscribedFeedWorkflow extends FeedWorkflow {
 		ArrayList<Group> groups = new ArrayList<Group>(feedData.getGroups()); //No sorting yet;
 		
 		// Get the updates for these groups and entities
-		String getUpdates = EndpointConstants.HOST + ":" + EndpointConstants.CORE_PORT + 
+		String getUpdates = SocialFeed.TARGET_HOST + ":" + EndpointConstants.CORE_PORT + 
 				EndpointConstants.ENTITY_POST + "?parent_id=root&";
 		Iterator<Event> eventsIterator = sortedEvents.iterator();
 		while (eventsIterator.hasNext())
