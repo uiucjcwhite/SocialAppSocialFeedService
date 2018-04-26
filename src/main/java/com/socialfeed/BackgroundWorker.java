@@ -49,7 +49,7 @@ public class BackgroundWorker {
 							System.out.println("Server status code: " + status);
 						}
 						
-						Thread.sleep(30000);
+						Thread.sleep(3000000);
 					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
