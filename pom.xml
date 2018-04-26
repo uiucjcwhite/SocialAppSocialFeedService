@@ -143,11 +143,6 @@
                             <directory>${project.build.directory}</directory>
                             <include>${project.build.finalName}.jar</include>
                         </resource>
-                        <resource>
-                        	<targetPath>/lib</targetPath>
-                            <directory>${project.basedir}/lib</directory>
-                            <include>*.jar</include>
-                        </resource>
                     </resources>
                     <forceTags>false</forceTags>
                     <imageTags>
