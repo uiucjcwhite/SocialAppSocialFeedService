@@ -24,6 +24,7 @@ public class SocialFeed implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		TARGET_HOST = env.getProperty("target_url");
+		BackgroundWorker.startCoreControllerPing();
 	}
 
 	public static void main(String[] args) {
