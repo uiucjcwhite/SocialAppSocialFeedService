@@ -30,7 +30,7 @@ import com.controller.models.entities.Entity;
 import com.controller.models.entities.EntityPost;
 import com.controller.models.entities.Event;
 import com.controller.models.entities.Group;
-import com.controller.models.entities.Profile;
+import com.controller.models.entities.User;
 import com.controller.models.entities.enums.RecurringPeriodEnum;
 import com.controller.models.relationships.EventAttendanceRelation;
 import com.controller.models.relationships.GroupMembership;
@@ -65,7 +65,6 @@ public class DataProvider {
 	public static final String GROUP = "Group";
 	public static final String GROUP_MEMBERSHIP = "Group Membership";
 	public static final String INTEREST = "Interest";
-	public static final String PROFILE = "Profile";
 	public static final String USER = "User";
 	public static final String ENTITY_POST = "Entity Post";
 	
@@ -167,7 +166,7 @@ public class DataProvider {
 				break;
 
 			case DataProvider.USER_INTEREST_SUBSCRIPTION: //TODO: Figure out if we are importing Interest bean into the feed or if it's going to go in core with the other beans.
-				String getInterests = urlName + EndpointConstants.INTERESTS_PORT + EndpointConstants.USER_INTEREST_SUBSCRIPTION +
+				String getInterests = urlName + EndpointConstants.CORE_PORT + EndpointConstants.USER_INTEREST_SUBSCRIPTION +
 					String.format("?entityId=%s", id);
 				url = new URL(getInterests);
 				conn = (HttpURLConnection) url.openConnection();
@@ -252,7 +251,7 @@ public class DataProvider {
 				conn.disconnect();
 				break;
 			
-			case DataProvider.PROFILE:
+			case DataProvider.USER:
 				//TODO: Figure out what we're doing with the friends
 				return new AsyncResult<HashSet<Entity>>(entities);
 				
@@ -288,22 +287,23 @@ public class DataProvider {
 		String id = BaseDatabaseObject.ID;
 		switch (endpoint)
 		{
-		case DataProvider.PROFILE:
-			returnEntity = new Profile(
+		case DataProvider.USER:
+			returnEntity = new User(
 					id,
-					entity.get(Profile.USER),
-					entity.get(Profile.FIRST_NAME),
-					entity.get(Profile.LAST_NAME),
-					Profile.Gender.valueOf(entity.get(Profile.GENDER)),
-					entity.get(Profile.CITY),
-					entity.get(Profile.STATE),
-					entity.get(Profile.COUNTRY),
-					Profile.Type.valueOf(entity.get(Profile.TYPE)),
-					entity.get(Profile.EMAIL),
-					Contact.jsonToContact(entity.get(Profile.CONTACT)),
-					Profile.devicesJsonToList(entity.get(Profile.DEVICES)),
-					entity.get(Profile.BANNER),
-					entity.get(Profile.PHOTO),
+					entity.get(User.FIREBASE_USER),
+					entity.get(User.FIRST_NAME),
+					entity.get(User.LAST_NAME),
+					User.Gender.valueOf(entity.get(User.GENDER)),
+					entity.get(User.CITY),
+					entity.get(User.STATE),
+					entity.get(User.COUNTRY),
+					User.Type.valueOf(entity.get(User.TYPE)),
+					entity.get(User.EMAIL),
+					Contact.jsonToContact(entity.get(User.CONTACT)),
+					User.devicesJsonToList(entity.get(User.DEVICES)),
+					entity.get(User.BANNER),
+					entity.get(User.PHOTO),
+					entity.get(User.URL),
 					Instant.parse(entity.get(BaseDatabaseObject.CREATEDDATE)));
 			break;
 		case DataProvider.EVENT:
@@ -320,9 +320,10 @@ public class DataProvider {
 					entity.get(Event.INVITE_POLICY),
 					entity.get(Event.RECURRING_ID),
 					entity.get(Event.VIEW_PRIVACY),
-					entity.get(Group.CONTACT),
-					entity.get(Group.BANNER),
-					entity.get(Group.PHOTO),
+					entity.get(Event.CONTACT),
+					entity.get(Event.BANNER),
+					entity.get(Event.PHOTO),
+					entity.get(Event.URL),
 					entity.get(BaseDatabaseObject.CREATEDDATE));
 			break;
 		case DataProvider.GROUP:
@@ -340,6 +341,7 @@ public class DataProvider {
 					Contact.jsonToContact(entity.get(Group.CONTACT)),
 					entity.get(Group.BANNER),
 					entity.get(Group.PHOTO),
+					entity.get(Group.URL),
 					Instant.parse(entity.get(BaseDatabaseObject.CREATEDDATE)));
 			break;
 		case DataProvider.ENTITY_POST:
@@ -389,7 +391,7 @@ public class DataProvider {
 	public static Future<ArrayList<Event>> getClosestEvents(Location location) throws IOException, ParseException
 	{
 		String getClosestEvents = SocialFeed.TARGET_HOST + ":" + EndpointConstants.CORE_PORT + EndpointConstants.EVENT;
-		URL url = new URL(getClosestEvents + String.format("?view_privacy=Public&exact_location=%s&limit=50&sort=distance&orderby=ASC", location.toString()));
+		URL url = new URL(getClosestEvents + String.format("?view_privacy=Public&exact_location=%s&limit=50&sort=ASC&orderby=distance", location.toString()));
 		System.out.println(url.toString());
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		
@@ -403,6 +405,12 @@ public class DataProvider {
 		return new AsyncResult<ArrayList<Event>>(events);	
 	}
 	
+	// TODO: Implement this.
+	@Async static Future<ArrayList<Event>> getClosestGroups(Location location)
+	{
+		return null;
+	}
+
 	@Async
 	public static Future<ArrayList<Event>> getEventsFromSubscribedGroups(HashSet<Group> subscribedGroups) throws IOException, SQLException, ParseException
 	{

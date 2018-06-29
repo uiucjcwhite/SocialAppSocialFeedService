@@ -28,8 +28,12 @@ public class SocialFeedController {
 
 	@RequestMapping(value = "/feed", method = RequestMethod.GET)
 	@ResponseBody
-	public LinkedList<Entity> getSocialFeed(@RequestParam("userId") String userId,
-			@RequestParam("address") String address) {
-		return SocialFeedServicer.getSocialFeed(userId, address);
+	public ResponseEntity<LinkedList<Entity>> getSocialFeed(@RequestParam("userId") String userId,
+			@RequestParam("location") String location) {
+		if (userId == null) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+		}
+
+		return ResponseEntity.status(HttpStatus.OK).body(SocialFeedServicer.getSocialFeed(userId, location));
 	}
 }

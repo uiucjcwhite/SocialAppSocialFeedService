@@ -43,22 +43,18 @@ public class DataProviderWorkflow extends FeedWorkflow {
 				Future<HashSet<String>> currentSubscriptionCall = databaseSubscriptionCalls.get(subscriptionIndex);
 				if (currentSubscriptionCall.isDone())
 				{
-					System.out.println("Current call is done");
 					try {
 						HashSet<String> subscriptionIds = currentSubscriptionCall.get(); //We have all of the user's subscribed ids. We now need to get their data.
 						if (subscriptionIds.size() > 0)
 						{
 							String sampleId = subscriptionIds.iterator().next();
-							System.out.println(String.format("Sample id: %s", sampleId));
 							if (ObjectIdPrefixEnum.getEnum(sampleId.substring(0, 3)) == ObjectIdPrefixEnum.USER_INTEREST_SUBSCRIPTION)
 							{
-								System.out.println("Setting user interests");
 								feedData.setInterests(subscriptionIds);
 							}
 							else
 							{
 								String prefix = this.getDataEntityTypeFromRelationship(sampleId);
-								System.out.println(String.format("Adding subscribed data call for %s", prefix));
 								databaseDataCalls.add(DataProvider.getSubscribedData(prefix, subscriptionIds));
 							}
 						}
@@ -71,7 +67,6 @@ public class DataProviderWorkflow extends FeedWorkflow {
 					}
 					
 					databaseSubscriptionCalls.remove(subscriptionIndex);
-					System.out.println("Removing call");
 				}
 				
 				if (!databaseSubscriptionCalls.isEmpty())
@@ -108,7 +103,6 @@ public class DataProviderWorkflow extends FeedWorkflow {
 			}
 		}
 		
-		System.out.println("Data provider step finished");
 		return feedData;
 	}
 	
@@ -130,7 +124,6 @@ public class DataProviderWorkflow extends FeedWorkflow {
 			e.printStackTrace();
 		}
 		
-		System.out.println(String.format("Setting feed data for %s prefix", prefix.toString()));
 		switch (prefix)
 			{
 			case USER:
@@ -155,7 +148,7 @@ public class DataProviderWorkflow extends FeedWorkflow {
 		switch (prefix)
 		{
 		case USER:
-			endpoint = DataProvider.PROFILE;
+			endpoint = DataProvider.USER;
 			break;
 		case GROUP:
 			endpoint = DataProvider.GROUP;
@@ -170,7 +163,6 @@ public class DataProviderWorkflow extends FeedWorkflow {
 			break;
 		}
 		
-		System.out.println(String.format("Getting endpoint %s from prefix %s", endpoint, prefixStr));
 		return endpoint;
 	}
 }

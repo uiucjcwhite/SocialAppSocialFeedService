@@ -51,7 +51,6 @@ public class SocialFeedServicer {
 		SuggestedFeedWorkflow suggestedFeed = new SuggestedFeedWorkflow();
 		feedData = suggestedFeed.beginWorkflow(feedData);
 		
-
 		for (Entity entity: feedData.getFeedItems())
 		{
 			System.out.println("Feed item: " + entity.getId());
